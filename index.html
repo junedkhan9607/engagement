@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Engagement of Zeba & Salman</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400..700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css" />
+
+</head>
+<body>
+
+    <!-- ===== MUSIC PLAYER ===== -->
+   <audio id="bgMusic" loop preload="none">
+        <source src="guitar music.mp3" type="audio/mpeg" />
+    </audio>
+
+    <!-- ===== MUSIC TOGGLE BUTTON ===== -->
+    <button id="musicToggle" class="music-float-btn" aria-label="Toggle Music">
+        <i class="fas fa-music"></i>
+        <span class="pulse-ring"></span>
+    </button>
+
+    <!-- ===== CURTAIN OVERLAY ===== -->
+    <div id="curtainOverlay">
+        <div class="curtain-panel left"></div>
+        <div class="curtain-panel right"></div>
+        <div class="curtain-center">
+            <div class="invitation-logo">✦</div>
+            <h1>The Royal Engagement</h1>
+            <p class="sub-text">~ Zeba & Salman ~</p>
+            <div class="open-btn">
+                <span>Tap to Open</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div id="mainContent">
+
+        <!-- SECTION 1: HERO -->
+        <section class="section hero" id="hero">
+            <div class="floating-particles" id="particles"></div>
+            <div class="hero-content">
+                <span class="blessing">✦ بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ ✦</span>
+                <p class="invite-line">Under the Blessing of Almighty Allah,<br />We Invite You To Celebrate The Engagement Of</p>
+                <h1 class="couple-title">Zeba <br> <span class="amp">&</span> <br>Salman</h1>
+                <div class="scroll-indicator section-scroll-next" data-next="scratch">
+                    <span>Scroll to explore</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: SCRATCH DATE -->
+        <section class="section scratch" id="scratch">
+            <div class="scratch-wrapper">
+                <h2 class="section-title">Reveal the Date</h2>
+                <p class="scratch-hint">✦ Scratch the golden card ✦</p>
+                <div class="scratch-box">
+                    <div class="date-hidden">
+                        <span class="date-label">Save The Date</span>
+                        <strong class="date-main">1st August 2026</strong>
+                        <span class="date-hijri">17 Safar ul muzaffar 1448 AH</span>
+                    </div>
+                    <canvas id="scratchCanvas" width="340" height="220"></canvas>
+                </div>
+                <!-- Countdown Timer -->
+                <div id="countdownContainer" class="countdown-container">
+                    <h3 class="countdown-title"><i class="fas fa-mosque"></i> Time Until The Big Day</h3>
+                    <div class="countdown-grid">
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="days">00</span>
+                            <span class="countdown-label">Days</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="hours">00</span>
+                            <span class="countdown-label">Hours</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="minutes">00</span>
+                            <span class="countdown-label">Mins</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="seconds">00</span>
+                            <span class="countdown-label">Secs</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="scroll-indicator section-scroll-next" data-next="couple">
+                    <span>Scroll to explore</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: COUPLE -->
+        <section class="section couple" id="couple">
+            <div class="couple-wrapper">
+                <h2 class="section-title">The Happy Couple</h2>
+                <div class="couple-grid">
+                    <div class="profile-card">
+                        <div class="profile-icon"><i class="fas fa-gem"></i></div>
+                        <h3>Bride</h3>
+                        <h4>Dr. Zeba kazi</h4>
+                        <p class="qualification"> (BHMS)</p>
+                        <div class="divider"></div>
+                        <p class="parents">doughter of Mr. Kazi Mohammad Hanif <br><br>Nizamiya Roshan Grand Aurangabad</p>
+                    </div>
+                    <div class="heart-divider" ><i class="fas fa-heart"></i></div>
+                    <div class="profile-card">
+                         <div class="profile-icon"><i class="fas fa-user-tie"></i></div>
+                        <h3>Groom</h3>
+                        <h4>Dr. Salman Kazi</h4>
+                        <p class="qualification"> (MBBS)</p>
+                        <div class="divider"></div>
+                        <p class="parents">Son of Mr. & Mrs. Idrees Kazi(Doctor) <br><br>Jaama Masjid Road Akkal Kuwwa</p>
+                    </div>
+                </div>
+                <div class="scroll-indicator section-scroll-next" data-next="valima">
+                    <span>Scroll to explore</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </section>
+
+
+        
+
+        <!-- SECTION 5: VALIMA -->
+        <section class="section venue gold" id="valima">
+
+            <div class="venue-card gold-card">
+                <div class="venue-image-container">
+                    <img src="hall.png" alt="Royal Heritage Lawn" class="venue-image" />
+                </div><br><br>
+                <span class="venue-tag">✦ The Grand Feast ✦</span>
+                <h2>Engagement Ceremony</h2>
+                <div class="venue-date highlight">Saturday, 1st August 2026</div>
+                <p class="venue-time"><i class="fas fa-clock"></i> Ater Namaz e Maghrib: 07:00 PM onwards</p>
+                <p class="venue-name"><i class="fas fa-hotel"></i> Kiswa Farm House</p>
+                <p class="venue-address">Abdi Mandi, doulatabad Aurangabad</p>
+                
+                <!-- Hall Image -->
+                
+                <a href="https://maps.app.goo.gl/3wu49ageTc7ZQrU86" target="_blank" class="venue-btn primary">
+                    <i class="fas fa-map-location-dot"></i> Get Location
+                </a>
+            </div>
+            <div class="scroll-indicator section-scroll-next" data-next="greetings">
+                <span>Scroll to explore</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </section>
+
+        <!-- SECTION 6: GREETINGS -->
+        <section class="section greetings" id="greetings">
+            <div class="greetings-wrapper">
+                <h2 class="greeting-title">"Forever Wishes from Kazi Family"</h2>
+                <div class="greeting-block">
+                    <h3>Best Compliments From:</h3>
+                    <p>All Relatives &amp; Friends</p>
+                </div>
+                <div class="greeting-block special">
+                    <h3>Invitation from Bride's Family:</h3>
+                    <p>Mr. Kazi Mahommed Hanif (Father)</p>
+                    <p>Mr. kazi Mohammed Haroon & Brothers</p>
+                </div>
+                <!-- Beautiful Dua Section -->
+                <div class="dua-section">
+                    <div class="dua-icon"></div>
+                    <p class="dua-text">"May Allah bless this union with endless love, peace, and prosperity."</p>
+                    <p class="dua-reference">— Ameen</p>
+                </div>
+                <footer class="wedding-footer">
+                    <p>We await your presence to bless the newlyengage.</p>
+                    <p class="thanks">Thank You </p>
+                </footer>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ===== CONFETTI CANVAS ===== -->
+    <canvas id="confettiCanvas"></canvas>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="script.js"></script>
+    
+</body>
+</html>

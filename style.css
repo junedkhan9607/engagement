@@ -1,0 +1,923 @@
+/* ===== RESET ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: #081b14;
+    color: #f3e9d2;
+    overflow: hidden;
+    height: 100vh;
+}
+
+body.scroll-active {
+    overflow-y: auto;
+    height: auto;
+}
+
+/* ===== FLOATING MUSIC BUTTON ===== */
+.music-float-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(212, 175, 55, 0.12);
+    border: 2px solid #d4af37;
+    color: #d4af37;
+    backdrop-filter: blur(12px);
+    z-index: 999;
+    cursor: pointer;
+    font-size: 1.3rem;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+}
+
+.music-float-btn.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.music-float-btn:hover {
+    background: #d4af37;
+    color: #081b14;
+    transform: scale(1.1);
+}
+
+.music-float-btn .pulse-ring {
+    position: absolute;
+    inset: -1px;
+    border-radius: 50%;
+    border: 2px solid rgba(212, 175, 55, 0.3);
+    animation: pulseRing 2s infinite;
+}
+
+@keyframes pulseRing {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* ===== CURTAIN ===== */
+#curtainOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    cursor: pointer;
+    background: #081b14;
+    overflow: hidden;
+    transition: opacity 1s ease 0.8s;
+}
+
+.curtain-panel {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(180deg, #123d28 0%, #1c5c3b 40%, #164a32 70%, #0a2416 100%);
+    transition: transform 1.5s cubic-bezier(0.65, 0, 0.35, 1);
+    will-change: transform;
+}
+
+.curtain-panel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(90deg, transparent 0px, rgba(255,255,255,0.03) 15px, transparent 30px);
+}
+
+.curtain-panel.left {
+    left: 0;
+    border-right: 2px solid rgba(212, 175, 55, 0.3);
+}
+
+.curtain-panel.right {
+    right: 0;
+    border-left: 2px solid rgba(212, 175, 55, 0.3);
+}
+
+#curtainOverlay.open .curtain-panel.left {
+    transform: translateX(-100%);
+}
+
+#curtainOverlay.open .curtain-panel.right {
+    transform: translateX(100%);
+}
+
+#curtainOverlay.open {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.curtain-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #d4af37;
+    z-index: 100000;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    width: 90%;
+    max-width: 500px;
+}
+
+#curtainOverlay.open .curtain-center {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+}
+
+.invitation-logo {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+    animation: floatLogo 3s ease-in-out infinite;
+}
+
+@keyframes floatLogo {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+.curtain-center h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(2.2rem, 8vw, 4rem);
+    font-weight: 400;
+    letter-spacing: 2px;
+}
+
+.curtain-center .sub-text {
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
+    letter-spacing: 6px;
+    opacity: 0.7;
+    margin: 10px 0 30px;
+}
+
+.open-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(212, 175, 55, 0.6);
+    animation: bounceDown 2s infinite;
+}
+
+.open-btn i {
+    animation: bounceArrow 2s infinite;
+}
+
+@keyframes bounceDown {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+}
+
+@keyframes bounceArrow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+}
+
+/* ===== MAIN CONTENT ===== */
+#mainContent {
+    opacity: 0;
+    transition: opacity 1s ease 0.5s;
+}
+
+#mainContent.visible {
+    opacity: 1;
+}
+
+/* ===== SECTIONS COMMON ===== */
+.section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.section-title {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    color: #d4af37;
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* ===== HERO ===== */
+.hero {
+    background: radial-gradient(ellipse at center, #0f2e21 0%, #081b14 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.hero-content {
+    text-align: center;
+    max-width: 700px;
+    position: relative;
+    z-index: 2;
+}
+
+.blessing {
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
+    color: #d4af37;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.8;
+    font-family: "Noto Nastaliq Urdu";
+}
+
+.invite-line {
+    font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+    line-height: 1.8;
+    opacity: 0.9;
+    margin: 15px 0 25px;
+    letter-spacing: 0.5px;
+}
+
+.couple-title {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(3.2rem, 10vw, 6.5rem);
+    font-weight: 400;
+    color: #d4af37;
+    line-height: 1.1;
+}
+
+.couple-title .amp {
+    color: #fff;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+}
+
+.scroll-indicator {
+    margin-top: 60px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    opacity: 0.4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.scroll-indicator i {
+    animation: bounceArrow 2s infinite;
+}
+
+.section-scroll-next {
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.venue .section-scroll-next {
+    margin-top: 30px;
+}
+
+.section-scroll-next:hover {
+    opacity: 0.8;
+}
+
+/* ===== FLOATING PARTICLES ===== */
+#particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(212, 175, 55, 0.2);
+    border-radius: 50%;
+    animation: floatParticle 20s infinite linear;
+}
+
+@keyframes floatParticle {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-100vh) scale(1); opacity: 0; }
+}
+
+/* ===== SCRATCH ===== */
+.scratch {
+    background: #0a1f16;
+    min-height: 100vh;
+}
+
+.scratch-wrapper {
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+}
+
+.scratch-hint {
+    font-size: 0.9rem;
+    opacity: 0.6;
+    letter-spacing: 1px;
+    margin-bottom: 25px;
+}
+
+.scratch-box {
+    position: relative;
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto;
+    aspect-ratio: 340/220;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 2px solid rgba(212, 175, 55, 0.3);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+    background: #16392a;
+}
+
+.date-hidden {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: radial-gradient(circle, #1c4a34, #0d2a1e);
+    z-index: 1;
+}
+
+.date-hidden .date-label {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    color: #d4af37;
+}
+
+.date-hidden .date-main {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    color: #fff;
+    margin: 8px 0;
+    font-weight: 600;
+}
+
+.date-hidden .date-hijri {
+    font-size: 0.8rem;
+    color: #d4af37;
+    opacity: 0.7;
+}
+
+#scratchCanvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    touch-action: none;
+    cursor: pointer;
+}
+
+/* ===== COUNTDOWN ===== */
+.countdown-container {
+    margin-top: 30px;
+    padding: 20px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 16px;
+    border: 1px solid rgba(212, 175, 55, 0.1);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+}
+
+.countdown-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.countdown-title {
+    font-size: 1rem;
+    color: #d4af37;
+    font-weight: 400;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+.countdown-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.countdown-item {
+    background: rgba(212, 175, 55, 0.05);
+    border-radius: 12px;
+    padding: 12px 8px;
+    border: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.countdown-number {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #d4af37;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.countdown-label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.5;
+}
+
+/* ===== COUPLE ===== */
+.couple {
+    background: #081b14;
+}
+
+.couple-wrapper {
+    max-width: 800px;
+    width: 100%;
+}
+
+.couple-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.profile-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(212, 175, 55, 0.1);
+    border-radius: 16px;
+    padding: 30px 20px;
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.profile-icon {
+    font-size: 2.5rem;
+    margin-bottom: 8px;
+    color: #d4af37;
+}
+
+.profile-card h3 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2rem;
+    color: #d4af37;
+    font-weight: 400;
+}
+
+.profile-card h4 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #fff;
+    margin-top: 2px;
+}
+
+.qualification {
+    font-size: 0.8rem;
+    opacity: 0.5;
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+}
+
+.divider {
+    width: 40px;
+    height: 1px;
+    background: #d4af37;
+    margin: 12px auto;
+    opacity: 0.3;
+}
+
+.parents {
+    font-size: 0.85rem;
+    font-style: italic;
+    opacity: 0.8;
+}
+
+.heart-divider {
+    font-size: 1.8rem;
+    color: #d4af37;
+    animation: pulseHeart 1.5s infinite;
+}
+
+@keyframes pulseHeart {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+}
+
+/* ===== VENUE ===== */
+.venue {
+    background: radial-gradient(circle, #0f2e21, #081b14);
+    padding: 60px 20px;
+    flex-direction: column;
+}
+
+.venue-card {
+    background: rgba(15, 46, 33, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 24px;
+    padding: 40px 25px;
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease;
+}
+
+.gold-card {
+    border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.venue-tag {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: #d4af37;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.venue-card h2 {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    color: #d4af37;
+    font-weight: 400;
+    margin-bottom: 12px;
+}
+
+.venue-date {
+    display: inline-block;
+    padding: 6px 18px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 12px;
+}
+
+.venue-date.highlight {
+    background: rgba(212, 175, 55, 0.12);
+    color: #d4af37;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.venue-time {
+    font-size: 0.95rem;
+    opacity: 0.85;
+    margin-bottom: 8px;
+}
+
+.venue-time i {
+    color: #d4af37;
+    margin-right: 6px;
+}
+
+.venue-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #fff;
+    margin-top: 12px;
+}
+
+.venue-name i {
+    color: #d4af37;
+    margin-right: 8px;
+}
+
+.venue-address {
+    font-size: 0.85rem;
+    opacity: 0.6;
+    margin: 5px 0 20px;
+    line-height: 1.5;
+}
+
+/* ===== VENUE IMAGES ===== */
+.venue-image-container {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.venue-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 360 / 230;
+    object-fit: contain;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+
+.venue-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 28px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    border: 1px solid #d4af37;
+    color: #d4af37;
+    background: transparent;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.venue-btn:hover {
+    background: #d4af37;
+    color: #081b14;
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.25);
+}
+
+.venue-btn.primary {
+    background: #d4af37;
+    color: #081b14;
+}
+
+.venue-btn.primary:hover {
+    background: transparent;
+    color: #d4af37;
+}
+
+/* ===== GREETINGS ===== */
+.greetings {
+    background: radial-gradient(ellipse at bottom, #11301f, #081b14);
+    min-height: 100vh;
+}
+
+.greetings-wrapper {
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+}
+
+.greeting-title {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: #d4af37;
+    font-weight: 400;
+    margin-bottom: 35px;
+    line-height: 1.2;
+}
+
+.greeting-block {
+    margin-bottom: 25px;
+}
+
+.greeting-block h3 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #d4af37;
+    opacity: 0.7;
+    margin-bottom: 6px;
+}
+
+.greeting-block p {
+    font-size: 1rem;
+    color: #fff;
+    font-weight: 300;
+}
+
+.greeting-block.special {
+    background: rgba(212, 175, 55, 0.04);
+    border: 1px dashed rgba(212, 175, 55, 0.2);
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.greeting-block.special p {
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+}
+
+/* ===== DUA SECTION ===== */
+.dua-section {
+    margin: 30px 0 20px;
+    padding: 25px 20px;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.05), rgba(212, 175, 55, 0.02));
+    border-radius: 16px;
+    border: 1px solid rgba(212, 175, 55, 0.08);
+}
+
+.dua-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.dua-text {
+    font-size: 1.1rem;
+    font-style: italic;
+    color: #f3e9d2;
+    line-height: 1.6;
+    font-weight: 300;
+}
+
+.dua-reference {
+    font-size: 0.85rem;
+    color: #d4af37;
+    margin-top: 8px;
+    opacity: 0.7;
+}
+
+.wedding-footer {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.wedding-footer p {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    opacity: 0.5;
+}
+
+.wedding-footer .thanks {
+    font-family: 'Great Vibes', cursive;
+    font-size: 1.5rem;
+    opacity: 0.7;
+    margin-top: 8px;
+}
+
+/* ===== CONFETTI ===== */
+#confettiCanvas {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 998;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (min-width: 768px) {
+    .couple-grid {
+        flex-direction: row;
+        justify-content: center;
+        gap: 30px;
+    }
+    
+    .profile-card {
+        max-width: 280px;
+    }
+    
+    .heart-divider {
+        font-size: 2rem;
+        margin-top: 40px;
+    }
+    
+    .scratch-box {
+        max-width: 380px;
+        aspect-ratio: 380/240;
+    }
+    
+    .venue-card {
+        padding: 50px 40px;
+    }
+    
+    .venue-btn {
+        width: auto;
+        min-width: 200px;
+    }
+    
+    .venue-image {
+        height: 250px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .section {
+        padding: 80px 40px;
+    }
+    
+    .profile-card {
+        padding: 40px 30px;
+        max-width: 320px;
+    }
+    
+    .venue-card {
+        padding: 60px 50px;
+    }
+    
+    .venue-image {
+        height: 280px;
+    }
+}
+
+/* ===== SCROLL ANIMATIONS (container only, background stays fixed) ===== */
+.profile-card,
+.greeting-block,
+.dua-section,
+.scratch-wrapper,
+.couple-wrapper,
+.greetings-wrapper {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.element-visible {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
+/* Golden flash */
+.golden-flash {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(
+        circle,
+        rgba(212, 175, 55, 0.6),
+        transparent 70%
+    );
+    pointer-events: none;
+    z-index: 9999;
+    animation: flashFade 1s ease forwards;
+}
+
+@keyframes flashFade {
+    from {
+        opacity: 1;
+        transform: scale(0.7);
+    }
+    to {
+        opacity: 0;
+        transform: scale(1.8);
+    }
+}
+
+/* Date reveal animation */
+.date-hidden.date-reveal {
+    animation: revealDateCard 1.5s ease forwards;
+}
+
+@keyframes revealDateCard {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    40% {
+        transform: scale(1.12);
+        opacity: 1;
+    }
+    70% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.date-hidden.date-reveal .date-main {
+    animation: glowDate 2s infinite alternate;
+}
+
+@keyframes glowDate {
+    from {
+        text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+    }
+    to {
+        text-shadow:
+            0 0 20px rgba(212, 175, 55, 0.9),
+            0 0 40px rgba(212, 175, 55, 0.6);
+    }
+}
+
+.profile-card:nth-child(1) { transition-delay: 0.1s; }
+.profile-card:nth-child(3) { transition-delay: 0.2s; }
+.heart-divider { transition-delay: 0.15s; }
+.greeting-block { transition-delay: 0.1s; }
+.greeting-block.special { transition-delay: 0.2s; }
+.dua-section { transition-delay: 0.25s; }

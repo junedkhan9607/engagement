@@ -72,6 +72,14 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+     // Pause music when page goes to background
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden && isMusicPlaying) {
+        music.pause();
+    } else if (!document.hidden && isMusicPlaying) {
+        music.play().catch(() => {});
+    }
+});
 
     // ==========================================
     // 2. FLOATING PARTICLES (Background Stars)

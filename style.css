@@ -771,16 +771,37 @@ body.scroll-active {
 /* ===== IMPERIAL INVITES AD ===== */
 
 .imperial-ad {
+    width: 100%;
+    max-width: 100%;
     margin: 42px auto 10px;
+    padding: 18px 12px;
+
     text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+
+    border: 1px solid transparent;
+    border-radius: 14px;
+
+    background:
+        linear-gradient(#0d2a1e, #0d2a1e) padding-box,
+        linear-gradient(
+            135deg,
+            #8f7020,
+            #f5d76e,
+            #8f7020
+        ) border-box;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.18);
 }
 
 /* Made by */
-.imperial-ad>span {
+.imperial-ad > span {
     display: block;
 
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.58rem;
+    font-size: clamp(0.45rem, 1.8vw, 0.58rem);
     font-weight: 500;
     letter-spacing: 3px;
     text-transform: uppercase;
@@ -791,10 +812,10 @@ body.scroll-active {
 
 /* Brand name */
 .imperial-ad h3 {
-    margin: 4px 0 14px;
+    margin: 4px 0 12px;
 
     font-family: Georgia, 'Times New Roman', serif;
-    font-size: 1.7rem;
+    font-size: clamp(1.15rem, 5vw, 1.7rem);
     font-weight: 500;
     letter-spacing: 1.5px;
 
@@ -804,49 +825,38 @@ body.scroll-active {
         0 0 12px rgba(212, 175, 55, 0.25);
 }
 
-/* Contact highlight */
+/* Contact area */
 .imperial-ad p {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+    display: inline-block;
 
     margin: 0;
-    padding: 9px 18px;
+    padding: 8px 14px;
 
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.72rem;
+    font-size: clamp(0.48rem, 2.5vw, 0.65rem);
     font-weight: 500;
     letter-spacing: 0.3px;
 
     color: #f3e9d2;
 
-    background: rgba(212, 175, 55, 0.1);
-    border: 1px solid rgba(212, 175, 55, 0.35);
+    background: rgba(212, 175, 55, 0.12);
+
+    border: 1px solid rgba(212, 175, 55, 0.4);
     border-radius: 50px;
 
     box-shadow:
-        0 4px 18px rgba(212, 175, 55, 0.08);
+        0 4px 18px rgba(212, 175, 55, 0.1);
 }
 
 /* Phone number */
 .imperial-ad p strong {
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.85rem;
+    font-size: clamp(0.58rem, 3vw, 0.78rem);
     font-weight: 700;
     letter-spacing: 0.8px;
 
     color: #f5d76e;
 }
-
-.imperial-ad {
-    padding: 20px 15px;
-    border: 1px solid transparent;
-    border-radius: 14px;
-    background:
-        linear-gradient(#0d2a1e, #0d2a1e) padding-box,
-        linear-gradient(135deg, #8f7020, #f5d76e, #8f7020) border-box;
-}
-
 /* ===== CONFETTI ===== */
 #confettiCanvas {
     position: fixed;

@@ -517,8 +517,7 @@ body.scroll-active {
     font-size: 0.85rem;
     font-style: italic;
     opacity: 0.8;
-    font-size: clamp(10px, 4vw, 24px) !important;
-    white-space: nowrap !important;
+   
 }
 
 .heart-divider {
@@ -593,9 +592,7 @@ body.scroll-active {
     font-size: 0.95rem;
     opacity: 0.85;
     margin-bottom: 8px;
-    font-size: clamp(10px, 4vw, 24px) !important;
-    white-space: nowrap !important;
-}
+    
 
 .venue-time i {
     color: #d4af37;
@@ -745,6 +742,8 @@ body.scroll-active {
     color: #f3e9d2;
     line-height: 1.6;
     font-weight: 300;
+    font-size: clamp(10px, 4vw, 24px) !important;
+    white-space: nowrap !important;
 }
 
 .dua-reference {

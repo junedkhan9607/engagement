@@ -1,207 +1,363 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Engagement of Zeba & Salman</title>
-    
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400..700&display=swap" rel="stylesheet">
-    
-    <!-- CSS -->
-    <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Completed — Imperial Digitals</title>
+  
+  <!-- Google Fonts: Playfair Display & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-    <!-- Vercel Web Analytics -->
+    body {
+      background: #fbf9f5;
+      color: #1c1917;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 16px;
+      overflow-x: hidden;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Soft Ambient Glows */
+    .glow-1 {
+      position: fixed;
+      top: -10%;
+      left: -10%;
+      width: 300px;
+      height: 300px;
+      background: rgba(212, 175, 55, 0.18);
+      filter: blur(90px);
+      border-radius: 50%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .glow-2 {
+      position: fixed;
+      bottom: -10%;
+      right: -10%;
+      width: 300px;
+      height: 300px;
+      background: rgba(184, 134, 11, 0.15);
+      filter: blur(90px);
+      border-radius: 50%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Main Card Container */
+    .card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 410px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 32px;
+      padding: 44px 28px 36px 28px;
+      box-shadow: 0 20px 50px rgba(28, 25, 23, 0.05),
+                  0 1px 3px rgba(0, 0, 0, 0.02);
+      text-align: center;
+      animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      overflow: hidden;
+    }
+
+    /* Subtle Gold Accent Line at Top */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 20%;
+      right: 20%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #c5a059, transparent);
+      opacity: 0.8;
+    }
+
+    /* Focal Icon Header */
+    .event-over-icon {
+      width: 52px;
+      height: 52px;
+      background: rgba(197, 160, 89, 0.1);
+      border: 1px solid rgba(197, 160, 89, 0.25);
+      color: #c5a059;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 18px auto;
+      font-size: 20px;
+    }
+
+    .event-over-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: #1c1917;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .event-over-subtitle {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      color: #c5a059;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .thank-you-desc {
+      font-size: 13.5px;
+      color: #57534e;
+      line-height: 1.6;
+      font-weight: 300;
+      margin-bottom: 24px;
+    }
+
+    /* Elegant Divider */
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin: 28px 0;
+    }
+
+    .divider-line {
+      height: 1px;
+      flex: 1;
+      background: linear-gradient(90deg, transparent, rgba(197, 160, 89, 0.3), transparent);
+    }
+
+    .divider-star {
+      color: #c5a059;
+      font-size: 9px;
+      opacity: 0.8;
+    }
+
+    /* Imperial Digitals Footer Branding */
+    .brand-sub {
+      font-size: 9.5px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #a8a29e;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .brand-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #1c1917;
+      margin-bottom: 4px;
+      letter-spacing: -0.2px;
+    }
+
+    .brand-desc {
+      font-size: 12px;
+      color: #78716c;
+      font-weight: 300;
+      margin-bottom: 22px;
+    }
+
+    /* Services Grid */
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 26px;
+    }
+
+    .service-card {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(28, 25, 23, 0.05);
+      padding: 12px 10px;
+      border-radius: 16px;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: #292524;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.015);
+      transition: all 0.3s ease;
+    }
+
+    .service-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(197, 160, 89, 0.3);
+      box-shadow: 0 6px 16px rgba(197, 160, 89, 0.08);
+    }
+
+    .service-card i {
+      font-size: 13px;
+      color: #c5a059;
+      flex-shrink: 0;
+    }
+
+    /* Tap-to-Call Contact Button (UX Upgrade) */
+    .contact-box {
+      display: block;
+      background: #1c1917;
+      color: #ffffff;
+      border-radius: 18px;
+      padding: 16px 20px;
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(28, 25, 23, 0.12);
+    }
+
+    .contact-box:active {
+      transform: scale(0.98);
+      background: #2a2421;
+    }
+
+    .contact-label {
+      font-size: 9.5px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #a8a29e;
+      margin-bottom: 4px;
+      font-weight: 500;
+      display: block;
+    }
+
+    .contact-number {
+      font-size: 14.5px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .contact-number i {
+      color: #c5a059;
+      font-size: 13px;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Mobile Responsive Polish */
+    @media (max-width: 480px) {
+      .card {
+        padding: 36px 20px 28px 20px;
+        border-radius: 28px;
+      }
+
+      .event-over-title {
+        font-size: 28px;
+      }
+
+      .thank-you-desc {
+        font-size: 12.5px;
+      }
+
+      .service-card {
+        font-size: 11px;
+        padding: 10px 8px;
+      }
+    }
+  </style>
+     <!-- Vercel Web Analytics -->
     <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
-
 </head>
 <body>
 
-    <!-- ===== MUSIC PLAYER ===== -->
-   <audio id="bgMusic" loop preload="none">
-        <source src="guitar music.mp3" type="audio/mpeg" />
-    </audio>
+  <!-- Background Glows -->
+  <div class="glow-1"></div>
+  <div class="glow-2"></div>
 
-    <!-- ===== MUSIC TOGGLE BUTTON ===== -->
-    <button id="musicToggle" class="music-float-btn" aria-label="Toggle Music">
-        <i class="fas fa-music"></i>
-        <span class="pulse-ring"></span>
-    </button>
-
-    <!-- ===== CURTAIN OVERLAY ===== -->
-    <div id="curtainOverlay">
-        <div class="curtain-panel left"></div>
-        <div class="curtain-panel right"></div>
-        <div class="curtain-center">
-            <div class="invitation-logo">✦</div>
-            <h1>The Royal Engagement</h1>
-            <p class="sub-text">~ Zeba & Salman ~</p>
-            <div class="open-btn">
-                <span>Tap to Open</span>
-                <i class="fas fa-chevron-down"></i>
-            </div>
-        </div>
-    </div>
-
-    <!-- ===== MAIN CONTENT ===== -->
-    <div id="mainContent">
-
-        <!-- SECTION 1: HERO -->
-        <section class="section hero" id="hero">
-            <div class="floating-particles" id="particles"></div>
-            <div class="hero-content">
-                <span class="blessing">✦ بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ ✦</span>
-                <p class="invite-line">Under the Blessing of Almighty Allah,<br />We Invite You To Celebrate The Engagement Of</p>
-                <h1 class="couple-title">Zeba <br> <span class="amp">&</span> <br>Salman</h1>
-                <div class="scroll-indicator section-scroll-next" data-next="scratch">
-                    <span>Scroll to explore</span>
-                    <i class="fas fa-chevron-down"></i>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 2: SCRATCH DATE -->
-        <section class="section scratch" id="scratch">
-            <div class="scratch-wrapper">
-                <h2 class="section-title">Reveal the Date</h2>
-                <p class="scratch-hint">✦ Scratch the golden card ✦</p>
-                <div class="scratch-box">
-                    <div class="date-hidden">
-                        <span class="date-label">Save The Date</span>
-                        <strong class="date-main">1st August 2026</strong>
-                        <span class="date-hijri">17 Safar ul muzaffar 1448 AH</span>
-                    </div>
-                    <canvas id="scratchCanvas" width="340" height="220"></canvas>
-                </div>
-                <!-- Countdown Timer -->
-                <div id="countdownContainer" class="countdown-container">
-                    <h3 class="countdown-title"><i class="fas fa-mosque"></i> Time Until The Big Day</h3>
-                    <div class="countdown-grid">
-                        <div class="countdown-item">
-                            <span class="countdown-number" id="days">00</span>
-                            <span class="countdown-label">Days</span>
-                        </div>
-                        <div class="countdown-item">
-                            <span class="countdown-number" id="hours">00</span>
-                            <span class="countdown-label">Hours</span>
-                        </div>
-                        <div class="countdown-item">
-                            <span class="countdown-number" id="minutes">00</span>
-                            <span class="countdown-label">Mins</span>
-                        </div>
-                        <div class="countdown-item">
-                            <span class="countdown-number" id="seconds">00</span>
-                            <span class="countdown-label">Secs</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="scroll-indicator section-scroll-next" data-next="couple">
-                    <span>Scroll to explore</span>
-                    <i class="fas fa-chevron-down"></i>
-                </div>
-            </div>
-         </section>
-
-        <!-- SECTION 3: COUPLE -->
-        <section class="section couple" id="couple">
-            <div class="couple-wrapper">
-                <h2 class="section-title">The Happy Couple</h2>
-                <div class="couple-grid">
-                    <div class="profile-card">
-                        <div class="profile-icon"><i class="fas fa-gem"></i></div>
-                        <h3>Bride</h3>
-                        <h4>Dr. Zeba kazi</h4>
-                        <p class="qualification"> (BUMS)</p>
-                        <div class="divider"></div>
-                        <p class="parents">doughter of Mr. Kazi Mohammed Hanif <br><br>Nizamiya Colony Roshan Gate Aurangabad</p>
-                    </div>
-                    <div class="heart-divider" ><i class="fas fa-heart"></i></div>
-                    <div class="profile-card">
-                         <div class="profile-icon"><i class="fas fa-user-tie"></i></div>
-                        <h3>Groom</h3>
-                        <h4>Dr. Salman Kazi</h4>
-                        <p class="qualification"> (MBBS)</p>
-                        <div class="divider"></div>
-                        <p class="parents">Son of Mr. Idrees Kazi (Doctor) <br><br>Jaama Masjid Road Akkal Kuwwa</p>
-                    </div>
-                </div>
-                <div class="scroll-indicator section-scroll-next" data-next="valima">
-                    <span>Scroll to explore</span>
-                    <i class="fas fa-chevron-down"></i>
-                </div>
-            </div>
-        </section>
-
-
-        
-
-        <!-- SECTION 5: VALIMA -->
-        <section class="section venue gold" id="valima">
-
-            <div class="venue-card gold-card">
-                <div class="venue-image-container">
-                    <img src="hall.png" alt="Royal Heritage Lawn" class="venue-image" />
-                </div><br><br>
-                <span class="venue-tag">✦ The Grand Feast ✦</span>
-                <h2>Engagement Ceremony</h2>
-                <div class="venue-date highlight">Saturday, 1st August 2026</div>
-                <p class="venue-time"><i class="fas fa-clock"></i> After Namaz e Maghrib: 07:00 PM onwards</p>
-                <p class="venue-name"><i class="fas fa-hotel"></i> Kiswa Farm House</p>
-                <p class="venue-address">Abdi Mandi, doulatabad Aurangabad</p>
-                
-                <!-- Hall Image -->
-                
-                <a href="https://maps.app.goo.gl/3wu49ageTc7ZQrU86" target="_blank" class="venue-btn primary">
-                    <i class="fas fa-map-location-dot"></i> Get Location
-                </a>
-            </div>
-            <div class="scroll-indicator section-scroll-next" data-next="greetings">
-                <span>Scroll to explore</span>
-                <i class="fas fa-chevron-down"></i>
-            </div>
-        </section>
-
-        <!-- SECTION 6: GREETINGS -->
-        <section class="section greetings" id="greetings">
-            <div class="greetings-wrapper">
-                <h2 class="greeting-title">"Forever Wishes from Kazi Family"</h2>
-                <div class="greeting-block">
-                    <h3>Best Compliments From:</h3>
-                    <p>All Relatives &amp; Friends</p>
-                </div>
-                <div class="greeting-block special">
-                    <h3>Invitation from Bride's Family:</h3>
-                    <p>Mr. Kazi Mahammed Hanif (Father)</p>
-                    <p>Mr. kazi Mohammed Haroon & Brothers</p>
-                </div>
-                <!-- Beautiful Dua Section -->
-                <div class="dua-section">
-                    <div class="dua-icon"></div>
-                    <p class="dua-text">"May Allah bless this union with endless love, peace, and prosperity."</p>
-                    <p class="dua-reference">— Ameen</p>
-                </div>
-                <footer class="wedding-footer">
-                    <p>We await your presence to bless the newly engaged.</p>
-                    <p class="thanks">Thank You </p>
-                    <!-- ===== IMPERIAL INVITES AD ===== -->
-                    <div class="imperial-ad">
-                        <span>Made by</span>
-                        <h3>Imperial Digitals</h3>
-                        <p>Contact For Digital Invitations: <strong>+91 9607070753</strong></p>
-                    </div>
-                </footer>
-            </div>
-        </section>
-
-    </div>
-
-    <!-- ===== CONFETTI CANVAS ===== -->
-    <canvas id="confettiCanvas"></canvas>
-
-    <!-- ===== SCRIPTS ===== -->
-    <script src="script.js"></script>
+  <!-- Main Luxury Card -->
+  <main class="card">
     
+    <!-- MAIN CONTEXT -->
+    <div class="event-over-icon">
+      <i class="fa-solid fa-calendar-check"></i>
+    </div>
+    <h1 class="event-over-title">Event Is Over</h1>
+    <p class="event-over-subtitle">Thank You For Visiting</p>
+    <p class="thank-you-desc">
+      This celebration has come to a wonderful end. We sincerely thank you for your love, wishes, and presence.
+    </p>
+
+    <!-- Divider -->
+    <div class="divider">
+      <div class="divider-line"></div>
+      <i class="fa-solid fa-star divider-star"></i>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- BRANDING SECTION -->
+    <p class="brand-sub">Website Created By</p>
+    <h2 class="brand-name">Imperial Digitals</h2>
+    <p class="brand-desc">Interactive digital invitation websites for all occasions.</p>
+
+    <!-- Services Grid -->
+    <div class="services-grid">
+      <div class="service-card">
+        <i class="fa-solid fa-gem"></i>
+        <span>Wedding Invites</span>
+      </div>
+      <div class="service-card">
+        <i class="fa-solid fa-ring"></i>
+        <span>Engagement Invites</span>
+      </div>
+      <div class="service-card">
+        <i class="fa-solid fa-music"></i>
+        <span>Haldi & Rasm Invites</span>
+      </div>
+      <div class="service-card">
+        <i class="fa-solid fa-champagne-glasses"></i>
+        <span>All Custom Invites</span>
+      </div>
+    </div>
+
+    <!-- One-Tap Direct Dialing Contact Box -->
+    <a href="tel:+919607070753" class="contact-box" aria-label="Call Imperial Digitals">
+      <span class="contact-label">Contact For Digital Invitations</span>
+      <span class="contact-number">
+        <i class="fa-solid fa-phone"></i>
+        +91 9607070753
+      </span>
+    </a>
+
+  </main>
+
 </body>
 </html>

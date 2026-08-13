@@ -1,0 +1,281 @@
+/* ================================
+   1. RESET & BASE LAYOUT
+   ================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    width: 100%;
+    height: 100vh;                          /* fallback for very old browsers */
+    height: calc(var(--vh, 1vh) * 100);     /* fallback for iOS/Android without dvh support */
+    height: 100dvh;                         /* modern browsers: true dynamic viewport */
+    overflow: hidden;
+    font-family: 'Cinzel', serif;
+    background-color: #000;
+    overscroll-behavior: none;
+}
+
+/* ================================
+   2. VIDEO & OVERLAY
+   ================================ */
+#bg-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+    height: 100dvh;
+    object-fit: cover;
+    object-position: center center;
+    z-index: 1;
+    transition: filter 1s ease-in-out;
+    background-color: #000; /* avoids white flash before first frame paints */
+}
+
+/* Normal 5px Blur Effect */
+#bg-video.blur-effect {
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
+}
+
+/* Light Black Tint for Text Contrast */
+.video-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+    height: 100dvh;
+    background: rgba(0, 0, 0, 0);
+    z-index: 2;
+    transition: background 1s ease-in-out;
+    pointer-events: none;
+}
+
+.video-overlay.darken {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+/* ================================
+   3. LOADER
+   ================================ */
+.loader {
+    position: fixed;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.loader.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.loader-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding: 0 20px;
+}
+
+.loader-label {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(0.65rem, 2.8vw, 0.85rem);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #D4AF37;
+    opacity: 0.9;
+}
+
+.loader-bar-track {
+    width: min(70vw, 240px);
+    height: 4px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.15);
+    overflow: hidden;
+}
+
+.loader-bar-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #A6842A, #D4AF37, #F3E3A5);
+    transition: width 0.25s ease-out;
+}
+
+.loader-percent {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(0.7rem, 3vw, 0.85rem);
+    letter-spacing: 1px;
+    color: #FFFDF9;
+    opacity: 0.85;
+    min-width: 3ch;
+    text-align: center;
+}
+
+/* ================================
+   4. HERO CONTENT & STRICT NO-WRAP
+   ================================ */
+.hero {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+    height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    padding-top: max(15px, env(safe-area-inset-top));
+    padding-bottom: max(15px, env(safe-area-inset-bottom));
+    padding-left: max(15px, env(safe-area-inset-left));
+    padding-right: max(15px, env(safe-area-inset-right));
+}
+
+.hero-content {
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+    pointer-events: none;
+}
+
+.hero-content.show-text {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* STRICT NO-WRAP RULE (Chhoti screen par bhi kabhi next line me nahi jayega) */
+.nowrap {
+    white-space: nowrap !important;
+    display: block;
+    max-width: 100%;
+}
+
+/* ================================
+   5. TYPOGRAPHY (RESPONSIVE AUTO-SCALE)
+   ================================ */
+.blessing {
+    font-size: clamp(0.68rem, 4vw, 1.2rem);
+    color: #D4AF37;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-family: "Noto Nastaliq Urdu", serif;
+}
+
+.invite-line {
+    font-size: clamp(0.62rem, 3.2vw, 1.1rem);
+    line-height: 1.8;
+    color: #FFFFFF;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.couple-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(2.6rem, 13vw, 6.5rem);
+    font-weight: 400;
+    color: #FFFDF9;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+    line-height: 1.1;
+    margin: 5px 0;
+}
+
+.couple-title .amp {
+    color: #D4AF37;
+    font-size: clamp(1.6rem, 8vw, 3.5rem);
+    line-height: 1;
+    margin: 4px 0;
+}
+
+.scroll-indicator {
+    margin-top: 15px;
+    font-size: clamp(0.65rem, 2.5vw, 0.75rem);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #D4AF37;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+@keyframes bounceArrow {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-6px); }
+    60% { transform: translateY(-3px); }
+}
+
+.scroll-indicator i {
+    animation: bounceArrow 2s infinite;
+}
+
+/* ================================
+   6. VERY NARROW SCREENS (old iPhone SE, small Androids)
+   ================================ */
+@media (max-width: 340px) {
+    .hero-content { gap: 9px; }
+    .blessing { font-size: 0.62rem; }
+    .invite-line { font-size: 0.56rem; line-height: 1.6; }
+    .couple-title { font-size: 2.2rem; }
+    .couple-title .amp { font-size: 1.3rem; }
+}
+
+/* ================================
+   7. LANDSCAPE / SHORT-HEIGHT SCREENS
+   (phones rotated, small laptops in a browser dock, etc.)
+   ================================ */
+@media (orientation: landscape) and (max-height: 500px) {
+    .hero-content { gap: 6px; }
+    .blessing { font-size: clamp(0.6rem, 2.6vh, 1rem); }
+    .invite-line { font-size: clamp(0.55rem, 2vh, 0.9rem); line-height: 1.4; }
+    .couple-title { font-size: clamp(1.8rem, 9vh, 4rem); margin: 2px 0; }
+    .couple-title .amp { font-size: clamp(1.1rem, 5vh, 2rem); margin: 0; }
+    .scroll-indicator { margin-top: 6px; }
+}
+
+/* ================================
+   8. LARGE / DESKTOP SCREENS
+   (prevents text from ballooning too wide on big monitors)
+   ================================ */
+@media (min-width: 1200px) {
+    .hero-content { max-width: 900px; }
+    .invite-line { font-size: 1.15rem; }
+    .couple-title { font-size: 6.5rem; }
+}
+
+/* ================================
+   9. ACCESSIBILITY — REDUCED MOTION
+   ================================ */
+@media (prefers-reduced-motion: reduce) {
+    .loader-bar-fill { transition: none; }
+    .scroll-indicator i { animation: none; }
+    .hero-content { transition: opacity 0.4s ease; transform: none; }
+    #bg-video { transition: none; }
+    .video-overlay { transition: none; }
+}

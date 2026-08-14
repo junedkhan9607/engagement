@@ -6,152 +6,431 @@ document.addEventListener("DOMContentLoaded", () => {
     const barFill = document.getElementById("loaderBarFill");
     const percentText = document.getElementById("loaderPercent");
 
-    let loadComplete = false;   // buffering finished, first frame ready to show
-    let isPlaying = false;      // user has interacted, video is playing
-    let textTriggered = false;  // end-of-video text reveal
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let loadComplete = false;
+    let isPlaying = false;
+    let textTriggered = false;
+    let firstFrameReady = false;
 
-    /* ===========================================
-       1. TRUE VIEWPORT HEIGHT FIX (old iOS/Android)
-       =========================================== */
+    const prefersReducedMotion =
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+
+    /* =====================================================
+       1. VIEWPORT HEIGHT — iOS + ANDROID
+       ===================================================== */
+
     function setViewportHeight() {
-        document.documentElement.style.setProperty("--vh", `${window.innerHeight * 0.01}px`);
+        document.documentElement.style.setProperty(
+            "--vh",
+            `${window.innerHeight * 0.01}px`
+        );
     }
+
     setViewportHeight();
+
     window.addEventListener("resize", setViewportHeight);
     window.addEventListener("orientationchange", setViewportHeight);
 
-    /* ===========================================
-       2. PROGRESS BAR — reflects real buffered %
-       =========================================== */
-    function setPercent(p) {
-        const clamped = Math.max(0, Math.min(100, Math.round(p)));
-        if (barFill) barFill.style.width = clamped + "%";
-        if (percentText) percentText.textContent = clamped + "%";
-        return clamped;
+
+    /* =====================================================
+       2. PROGRESS BAR
+       ===================================================== */
+
+    function setPercent(percent) {
+        const value = Math.max(
+            0,
+            Math.min(100, Math.round(percent))
+        );
+
+        if (barFill) {
+            barFill.style.width = value + "%";
+        }
+
+        if (percentText) {
+            percentText.textContent = value + "%";
+        }
+
+        return value;
     }
+
+
+    /* =====================================================
+       3. UPDATE REAL VIDEO BUFFER
+       ===================================================== */
 
     function updateProgress() {
+
         if (loadComplete) return;
-        if (!video.duration || isNaN(video.duration) || !video.buffered.length) return;
 
-        const bufferedEnd = video.buffered.end(video.buffered.length - 1);
-        const percent = setPercent((bufferedEnd / video.duration) * 100);
+        if (
+            !video.duration ||
+            !isFinite(video.duration) ||
+            !video.buffered ||
+            !video.buffered.length
+        ) {
+            return;
+        }
 
-        if (percent >= 100) markLoadComplete();
+        try {
+            const bufferedEnd =
+                video.buffered.end(video.buffered.length - 1);
+
+            const percent =
+                (bufferedEnd / video.duration) * 100;
+
+            setPercent(percent);
+
+            /*
+             * Don't wait for an exact 100%.
+             * If the browser has enough data to play,
+             * mark it ready.
+             */
+            if (percent >= 95) {
+                prepareVideo();
+            }
+
+        } catch (error) {
+            console.log("Buffer check:", error);
+        }
     }
 
-    function markLoadComplete() {
+
+    /* =====================================================
+       4. VIDEO READY
+       ===================================================== */
+
+    function prepareVideo() {
+
         if (loadComplete) return;
+
+        /*
+         * We need metadata + at least the first frame.
+         */
+        if (
+            !video.readyState ||
+            video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA
+        ) {
+            return;
+        }
+
+        firstFrameReady = true;
         loadComplete = true;
+
         setPercent(100);
-        // brief pause at 100% so the bar visibly "completes" before revealing
-        setTimeout(showFirstFrame, 350);
-    }
 
-    /* ===========================================
-       3. SHOW STATIC FIRST FRAME (video stays paused
-          here — it does NOT auto-play). Loader fades
-          out, video fades in showing frame 0, and we
-          start listening for the user's first touch.
-       =========================================== */
-    function showFirstFrame() {
-        video.pause();
-        try { video.currentTime = 0; } catch (e) { /* some browsers throw before seekable */ }
-        // No opacity/class trick on the video itself — it behaves exactly like
-        // the original code (browser shows frame 0 naturally once buffered).
-        // The opaque loader sitting on top is what's hiding it until now.
-        if (loader) loader.classList.add("hide");
+        /*
+         * Give Safari a tiny moment to paint the first frame.
+         */
+        requestAnimationFrame(() => {
 
-        // Now — and only now — start listening for interaction to play.
-        interactionEvents.forEach(evt => {
-            window.addEventListener(evt, startVideo, { passive: true });
+            requestAnimationFrame(() => {
+
+                if (loader) {
+                    loader.classList.add("hide");
+                }
+
+                attachInteractionListeners();
+
+            });
+
         });
     }
 
-    /* ===========================================
-       4. START PLAYBACK — only on user's first
-          touch / scroll / swipe / click / key etc.
-       =========================================== */
+
+    /* =====================================================
+       5. SAFARI / iOS VIDEO INITIALIZATION
+       ===================================================== */
+
+    /*
+     * Calling load() after DOM is ready helps Safari initialize
+     * the media element correctly.
+     */
+    try {
+        video.muted = true;
+        video.setAttribute("muted", "");
+        video.setAttribute("playsinline", "");
+        video.setAttribute("webkit-playsinline", "");
+
+        video.preload = "auto";
+
+        video.load();
+
+    } catch (error) {
+        console.log("Video initialization:", error);
+    }
+
+
+    /* =====================================================
+       6. FIRST FRAME READY
+       ===================================================== */
+
+    video.addEventListener("loadeddata", () => {
+
+        /*
+         * loadeddata means the first frame is available.
+         * This is more useful for our purpose than waiting
+         * for canplaythrough.
+         */
+        prepareVideo();
+
+    });
+
+
+    video.addEventListener("canplay", () => {
+
+        /*
+         * Safari may reach canplay before loadeddata
+         * depending on its decoding behavior.
+         */
+        prepareVideo();
+
+    });
+
+
+    video.addEventListener("progress", updateProgress);
+
+    video.addEventListener("loadedmetadata", () => {
+
+        setPercent(5);
+
+        updateProgress();
+
+    });
+
+
+    /* =====================================================
+       7. INTERACTION
+       ===================================================== */
+
     const interactionEvents = [
         "touchstart",
-        "touchend",
-        "touchmove",
-        "click",
         "pointerdown",
-        "wheel",
+        "click",
         "keydown"
     ];
 
-    function startVideo() {
-        if (isPlaying || !loadComplete) return;
-        video.muted = true;
 
-        const playPromise = video.play();
-        if (playPromise !== undefined) {
-            playPromise.then(() => {
-                isPlaying = true;
-                removeInteractionListeners();
-            }).catch(err => {
-                console.log("Play interrupted:", err);
-                // Listeners stay active, will retry on the next interaction.
-            });
-        }
+    function attachInteractionListeners() {
+
+        interactionEvents.forEach(event => {
+
+            window.addEventListener(
+                event,
+                startVideo,
+                {
+                    passive: true
+                }
+            );
+
+        });
+
     }
+
 
     function removeInteractionListeners() {
-        interactionEvents.forEach(evt => {
-            window.removeEventListener(evt, startVideo);
+
+        interactionEvents.forEach(event => {
+
+            window.removeEventListener(
+                event,
+                startVideo
+            );
+
         });
+
     }
 
-    /* ===========================================
-       5. TEXT REVEAL near end of video
-       =========================================== */
-    function revealText() {
-        if (textTriggered) return;
-        textTriggered = true;
-        videoOverlay.classList.add("darken");
-        if (!prefersReducedMotion) {
-            video.classList.add("blur-effect");
+
+    /* =====================================================
+       8. START VIDEO
+       ===================================================== */
+
+    function startVideo() {
+
+        if (!loadComplete || isPlaying || !firstFrameReady) {
+            return;
         }
-        heroContent.classList.add("show-text");
+
+        /*
+         * Important for iPhone/Safari autoplay policy.
+         */
+        video.muted = true;
+        video.setAttribute("muted", "");
+
+        /*
+         * DO NOT set currentTime = 0 here.
+         * Safari can show a black frame when seeking
+         * immediately before playback.
+         */
+
+        const playPromise = video.play();
+
+        if (playPromise !== undefined) {
+
+            playPromise
+                .then(() => {
+
+                    isPlaying = true;
+
+                    removeInteractionListeners();
+
+                })
+                .catch(error => {
+
+                    console.log(
+                        "Video play waiting for interaction:",
+                        error
+                    );
+
+                });
+
+        } else {
+
+            isPlaying = true;
+
+            removeInteractionListeners();
+
+        }
+
     }
 
-    /* ===========================================
-       6. WIRE UP BUFFERING EVENTS
-       =========================================== */
-    video.addEventListener("loadedmetadata", updateProgress);
-    video.addEventListener("progress", updateProgress);
 
-    // Browser's own signal that it can play through without stalling —
-    // treat as "fully loaded" too, since buffered ranges don't always hit
-    // an exact 100 on every browser.
-    video.addEventListener("canplaythrough", markLoadComplete, { once: true });
+    /* =====================================================
+       9. INVITATION REVEAL — LAST 4 SECONDS
+       ===================================================== */
+
+    function revealText() {
+
+        if (textTriggered) return;
+
+        textTriggered = true;
+
+        if (videoOverlay) {
+            videoOverlay.classList.add("darken");
+        }
+
+        if (!prefersReducedMotion) {
+
+            video.classList.add("blur-effect");
+
+        }
+
+        if (heroContent) {
+
+            heroContent.classList.add("show-text");
+
+        }
+
+    }
+
+
+    /* =====================================================
+       10. VIDEO TIME
+       ===================================================== */
 
     video.addEventListener("timeupdate", () => {
-        if (!video.duration || isNaN(video.duration)) return;
-        const timeRemaining = video.duration - video.currentTime;
-        if (timeRemaining <= 4) revealText();
+
+        if (
+            !video.duration ||
+            !isFinite(video.duration)
+        ) {
+            return;
+        }
+
+        const remaining =
+            video.duration - video.currentTime;
+
+        if (remaining <= 4) {
+
+            revealText();
+
+        }
+
     });
+
+
+    /* =====================================================
+       11. VIDEO ENDED
+       ===================================================== */
 
     video.addEventListener("ended", () => {
-        video.pause();
+
+        /*
+         * Keep the final frame visible.
+         * Don't reset currentTime.
+         */
+        isPlaying = false;
+
     });
 
-    /* ===========================================
-       7. FAILSAFES — never let the user get stuck
-       =========================================== */
+
+    /* =====================================================
+       12. VIDEO ERROR
+       ===================================================== */
+
     video.addEventListener("error", () => {
-        // Video failed outright — skip straight to the text so the page
-        // still works, just without the background motion.
-        markLoadComplete();
-        revealText();
+
+        console.log(
+            "Video error:",
+            video.error
+        );
+
+        /*
+         * Don't leave the user permanently stuck.
+         */
+        if (!loadComplete) {
+
+            loadComplete = true;
+
+            setPercent(100);
+
+            if (loader) {
+                loader.classList.add("hide");
+            }
+
+            attachInteractionListeners();
+
+        }
+
     });
 
-    // If buffering stalls indefinitely (slow network, data-saver mode, etc.)
-    // don't trap the user on the loading screen forever.
+
+    /* =====================================================
+       13. STALLED / WAITING
+       ===================================================== */
+
+    video.addEventListener("stalled", () => {
+
+        console.log("Video stalled");
+
+    });
+
+
+    video.addEventListener("waiting", () => {
+
+        console.log("Video waiting for data");
+
+    });
+
+
+    /* =====================================================
+       14. SAFETY FALLBACK
+       ===================================================== */
+
+    /*
+     * Don't use a short timeout to fake 100%.
+     *
+     * 15 seconds is still allowed as a last-resort
+     * fallback for extremely unusual cases.
+     */
     setTimeout(() => {
-        if (!loadComplete) markLoadComplete();
+
+        if (!loadComplete && video.readyState >= 2) {
+
+            prepareVideo();
+
+        }
+
     }, 15000);
+
 });

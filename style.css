@@ -1,0 +1,1498 @@
+/* ================================
+   0. DESIGN TOKENS
+   Direction: premium Indian-wedding luxury — jewel magenta,
+   marigold orange and bright gold, restrained iconography
+   (the single ✦ motif, reused everywhere instead of mixed
+   imagery) and a soft glitter shimmer across the page.
+   ================================ */
+:root {
+    --wine-800: #7A0B34;   /* deep magenta-wine — primary heading/text ink */
+    --gold: #FFC93C;       /* vivid signature gold */
+    --gold-bright: #FFE7A0;
+    --ivory: #FFF8F0;      /* warm cream base */
+    --ivory-soft: #FDEDE3; /* warm peach-cream secondary */
+    --card: #FFFFFF;
+    --ink: #3A0E22;
+    --ink-soft: #8A5468;
+
+    /* Vibrant accents — the "tadhakta phadakta" layer */
+    --magenta: #D6336C;
+    --magenta-deep: #A61E4D;
+    --marigold: #FF9800;
+    --marigold-deep: #E65100;
+
+    /* Romantic accent — scratch card */
+    --rose-deep: #C97B87;
+    --rose-soft: rgba(244, 201, 206, 0.4);
+
+    /* Liquid glass — used in a few spots, not everywhere */
+    --glass-bg: rgba(255, 255, 255, 0.32);
+    --glass-border: rgba(255, 255, 255, 0.55);
+    --glass-shadow: 0 8px 32px rgba(122, 11, 52, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+
+    --space-2: 14px;
+    --space-3: 22px;
+    --space-4: 34px;
+    --space-5: 54px;
+
+    --radius-card: 22px;
+    --shadow-card: 0 22px 60px rgba(122, 11, 52, 0.09);
+    --ease-lux: cubic-bezier(0.22, 1, 0.36, 1);
+
+    /* Background-only flower photography — Unsplash, free to use.
+       Kept out of icons/medallions on purpose; these three are the
+       only place actual images appear, as soft low-opacity washes
+       behind a section, never on top of content. */
+    --flower-wash-1: url('https://images.unsplash.com/photo-1575543483595-568b7afb6b9e?fm=jpg&q=65&w=700&auto=format&fit=crop');
+    --flower-wash-2: url('https://images.unsplash.com/photo-1620005807545-2e08850d6591?fm=jpg&q=65&w=700&auto=format&fit=crop');
+    --flower-wash-3: url('https://images.unsplash.com/photo-1581938165093-050aeb5ef218?fm=jpg&q=65&w=700&auto=format&fit=crop');
+}
+
+/* ================================
+   1. RESET & BASE (mobile-first throughout)
+   ================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    scroll-behavior: smooth;
+    overscroll-behavior-y: none;
+}
+
+body {
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    background: var(--ivory);
+    color: var(--ink);
+    overflow-x: hidden;
+    position: relative;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+.nowrap {
+    white-space: nowrap !important;
+    display: block;
+    max-width: 100%;
+}
+
+/* Shared "eyebrow" label */
+
+.venue-tag {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--marigold-deep);
+    font-weight: 600;
+    margin-bottom: var(--space-2);
+}
+
+/* ================================
+   1b. AMBIENT GLITTER
+   A constant soft shimmer down the whole page. Every sparkle
+   below is placed at its own explicit position (no repeating
+   tile), so there's no visible dot-grid — just an irregular,
+   naturally-scattered field that scrolls along with the page.
+   Split into two layers with offset timing so it twinkles like
+   an actual sky instead of pulsing all together.
+   ================================ */
+body::before,
+body::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    background-repeat: no-repeat;
+}
+
+body::before {
+    background-image:
+        radial-gradient(circle, #fff 0 1.0px, transparent 1.3px),
+        radial-gradient(circle, #ffe7a0 0 1.5px, transparent 1.8px),
+        radial-gradient(circle, #fff 0 1.0px, transparent 1.4px),
+        radial-gradient(circle, #ffd6ea 0 1.3px, transparent 1.7px),
+        radial-gradient(circle, #fff 0 1.4px, transparent 1.7px),
+        radial-gradient(circle, #ffe7a0 0 1.1px, transparent 1.4px),
+        radial-gradient(circle, #fff 0 0.9px, transparent 1.2px),
+        radial-gradient(circle, #ffd6ea 0 1.4px, transparent 1.8px),
+        radial-gradient(circle, #fff 0 1.1px, transparent 1.5px),
+        radial-gradient(circle, #ffe7a0 0 1.5px, transparent 1.9px),
+        radial-gradient(circle, #fff 0 1.0px, transparent 1.4px),
+        radial-gradient(circle, #ffd6ea 0 0.9px, transparent 1.3px),
+        radial-gradient(circle, #fff 0 1.1px, transparent 1.4px),
+        radial-gradient(circle, #ffe7a0 0 1.3px, transparent 1.7px),
+        radial-gradient(circle, #fff 0 0.9px, transparent 1.3px),
+        radial-gradient(circle, #ffd6ea 0 1.2px, transparent 1.6px),
+        radial-gradient(circle, #fff 0 1.0px, transparent 1.3px);
+    background-position:
+        62.7% 4.4%, 72.0% 16.3%, 42.1% 4.8%, 4.5% 20.9%, 22.9% 8.0%,
+        78.6% 28.3%, 92.9% 34.0%, 82.5% 9.4%, 52.9% 24.4%, 80.8% 40.8%,
+        68.9% 6.4%, 9.6% 24.1%, 62.4% 36.7%, 27.4% 11.0%, 18.3% 31.3%,
+        96.0% 22.8%, 82.1% 45.7%;
+    animation: ambientTwinkleA 5s ease-in-out infinite;
+}
+
+body::after {
+    background-image:
+        radial-gradient(circle, #ffe7a0 0 1.0px, transparent 1.5px),
+        radial-gradient(circle, #fff 0 1.3px, transparent 1.7px),
+        radial-gradient(circle, #ffd6ea 0 1.0px, transparent 1.3px),
+        radial-gradient(circle, #fff 0 1.3px, transparent 1.8px),
+        radial-gradient(circle, #ffe7a0 0 1.6px, transparent 2.0px),
+        radial-gradient(circle, #fff 0 0.9px, transparent 1.3px),
+        radial-gradient(circle, #ffd6ea 0 0.9px, transparent 1.3px),
+        radial-gradient(circle, #fff 0 1.6px, transparent 2.1px),
+        radial-gradient(circle, #ffe7a0 0 1.3px, transparent 1.7px),
+        radial-gradient(circle, #fff 0 0.9px, transparent 1.3px),
+        radial-gradient(circle, #ffd6ea 0 1.5px, transparent 1.9px),
+        radial-gradient(circle, #fff 0 1.5px, transparent 2.0px),
+        radial-gradient(circle, #ffe7a0 0 1.3px, transparent 1.6px),
+        radial-gradient(circle, #fff 0 1.4px, transparent 1.8px),
+        radial-gradient(circle, #ffd6ea 0 0.8px, transparent 1.3px),
+        radial-gradient(circle, #fff 0 1.0px, transparent 1.3px),
+        radial-gradient(circle, #ffe7a0 0 0.9px, transparent 1.3px);
+    background-position:
+        32.0% 52.4%, 85.3% 61.9%, 88.9% 70.6%, 55.3% 47.0%, 39.9% 62.8%,
+        10.6% 56.5%, 77.2% 72.1%, 96.6% 52.3%, 3.1% 70.5%, 27.3% 62.9%,
+        45.1% 82.6%, 49.6% 69.0%, 30.4% 87.7%, 74.4% 83.2%, 2.1% 92.8%,
+        85.5% 91.0%, 85.4% 96.0%;
+    animation: ambientTwinkleB 6.5s ease-in-out infinite;
+    animation-delay: 1.2s;
+}
+
+@keyframes ambientTwinkleA {
+    0%, 100% { opacity: 0.25; }
+    50% { opacity: 0.8; }
+}
+
+@keyframes ambientTwinkleB {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 0.2; }
+}
+
+/* Shimmering gradient text — the page's shared "vibrant heading"
+   treatment, used by every major title below. */
+.shimmer-text {
+    background: linear-gradient(90deg, var(--magenta), var(--marigold), var(--gold), var(--magenta-deep), var(--magenta));
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: shimmerSweep 7s linear infinite;
+}
+
+@keyframes shimmerSweep {
+    to { background-position: 300% center; }
+}
+
+/* ================================
+   2. SCROLL PROGRESS RAIL
+   ================================ */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--magenta), var(--marigold), var(--gold));
+    z-index: 97;
+    transition: width 0.1s linear;
+}
+
+/* ================================
+   3. LOADER
+   ================================ */
+.loader {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1A0410;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.loader.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.loader-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 0 20px;
+}
+
+.loader-motif {
+    color: var(--gold);
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.loader-label {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(0.65rem, 2.8vw, 0.85rem);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.95;
+}
+
+.loader-bar-track {
+    width: min(70vw, 240px);
+    height: 4px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.15);
+    overflow: hidden;
+}
+
+.loader-bar-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--magenta), var(--marigold), var(--gold));
+    transition: width 0.25s ease-out;
+}
+
+.loader-percent {
+    font-size: clamp(0.7rem, 3vw, 0.85rem);
+    letter-spacing: 1px;
+    color: #FFFDF9;
+    opacity: 0.85;
+    min-width: 3ch;
+    text-align: center;
+}
+
+/* ================================
+   4. FLOATING MUSIC BUTTON
+   Liquid glass, only pulses while actually playing.
+   ================================ */
+.music-float-btn {
+    position: fixed;
+    bottom: max(20px, env(safe-area-inset-bottom));
+    right: max(20px, env(safe-area-inset-right));
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 152, 0, 0.16);
+    border: 1px solid var(--glass-border);
+    color: var(--marigold-deep);
+    backdrop-filter: blur(10px) saturate(160%);
+    -webkit-backdrop-filter: blur(10px) saturate(160%);
+    z-index: 99;
+    cursor: pointer;
+    font-size: 1.3rem;
+    opacity: 0;
+    transform: scale(0);
+    transition: transform 0.6s var(--ease-lux), opacity 0.6s var(--ease-lux),
+                background 0.3s ease, color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 30px rgba(122, 11, 52, 0.18);
+}
+
+.music-float-btn.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.music-float-btn:hover {
+    background: linear-gradient(135deg, var(--magenta), var(--marigold));
+    color: #fff;
+}
+
+.music-float-btn.playing {
+    background: linear-gradient(135deg, var(--magenta), var(--marigold));
+    color: #fff;
+}
+
+.music-float-btn .pulse-ring {
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 2px solid rgba(214, 51, 108, 0.4);
+    opacity: 0;
+}
+
+.music-float-btn.playing .pulse-ring {
+    opacity: 1;
+    animation: pulseRing 2s infinite;
+}
+
+.music-float-btn.music-error {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.music-float-btn:focus-visible {
+    outline: 2px solid var(--marigold-deep);
+    outline-offset: 3px;
+}
+
+@keyframes pulseRing {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* ================================
+   5. SECTIONS — COMMON
+   ================================ */
+.section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-5) 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.section:not(.hero) {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 900px;
+}
+
+.section-title {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: var(--space-3);
+    filter: drop-shadow(1px 2px 0px rgba(255, 152, 0, 0.15));
+}
+
+/* A single restrained ✦ mark flanking every section title —
+   one consistent motif instead of mixed imagery, reused the
+   same way the eyebrow labels already use it. Quieter, and
+   reads as more considered than a pair of photo medallions. */
+.section-title::before,
+.section-title::after {
+    content: '✦';
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 0.55em;
+    color: var(--marigold-deep);
+    transform: translateY(-0.1em);
+}
+
+.section-title::before {
+    margin-right: 12px;
+}
+
+.section-title::after {
+    margin-left: 12px;
+}
+
+.scroll-indicator {
+    margin-top: var(--space-5);
+    padding: 10px 16px;
+    margin-bottom: -10px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--magenta-deep);
+    opacity: 0.75;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+    min-height: 44px;
+    justify-content: center;
+}
+
+.scroll-indicator:hover {
+    opacity: 1;
+}
+
+.scroll-indicator i {
+    color: var(--marigold);
+    animation: bounceArrow 2s infinite;
+}
+
+@keyframes bounceArrow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+}
+
+.venue .scroll-indicator {
+    margin-top: var(--space-3);
+}
+
+/* ================================
+   6. HERO (VIDEO INTRO)
+   ================================ */
+.hero {
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+    height: 100dvh;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 15px;
+    padding-top: max(15px, env(safe-area-inset-top));
+    padding-bottom: max(15px, env(safe-area-inset-bottom));
+    padding-left: max(15px, env(safe-area-inset-left));
+    padding-right: max(15px, env(safe-area-inset-right));
+    background: #000;
+}
+
+.hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    z-index: 1;
+    transition: filter 1s ease-in-out;
+    background-color: #000;
+}
+
+.hero-video.blur-effect {
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
+}
+
+.hero .video-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0);
+    z-index: 2;
+    transition: background 1s ease-in-out;
+    pointer-events: none;
+}
+
+.hero .video-overlay.darken {
+    background: rgba(20, 4, 12, 0.45);
+}
+
+/* This element existed in the HTML with no matching rule — it rendered
+   but did nothing. Giving it the vignette its name/aria-hidden markup
+   implied: a soft dark frame around the video edges. */
+.hero-vignette {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    box-shadow: inset 0 0 15vw rgba(0, 0, 0, 0.55);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+    pointer-events: none;
+}
+
+.hero-content.show-text {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* A single ✦ mark above the blessing line — quiet, elegant,
+   and a few twinkling points around the couple's names. */
+.hero-content::before {
+    content: '✦';
+    display: block;
+    font-size: clamp(1rem, 3.5vw, 1.5rem);
+    color: var(--gold);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 2px;
+}
+
+.hero-content::after {
+    content: '';
+    position: absolute;
+    inset: -10% -6%;
+    pointer-events: none;
+    z-index: -1;
+    background-repeat: no-repeat;
+    background-size: 6px 6px;
+    background-image:
+        radial-gradient(circle, #fff 0 1.3px, transparent 1.7px),
+        radial-gradient(circle, #ffe7a0 0 1.2px, transparent 1.6px),
+        radial-gradient(circle, #fff 0 1px, transparent 1.4px),
+        radial-gradient(circle, #ffe7a0 0 1px, transparent 1.4px),
+        radial-gradient(circle, #fff 0 1.1px, transparent 1.5px);
+    background-position: 8% 15%, 88% 25%, 15% 80%, 82% 78%, 50% 6%;
+    animation: sparkleTwinkle 2.8s ease-in-out infinite;
+}
+
+.blessing {
+    font-size: clamp(0.68rem, 4vw, 1.2rem);
+    color: var(--gold);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-family: "Noto Nastaliq Urdu", serif;
+}
+
+.invite-line {
+    font-size: clamp(0.62rem, 3.2vw, 1.1rem);
+    line-height: 1.8;
+    color: #FFFFFF;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.couple-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(2.3rem, 11.5vw, 5.8rem);
+    font-weight: 400;
+    line-height: 1.15;
+    margin: 5px 0;
+    filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.75));
+}
+
+/* The names live in child spans (for the nowrap rule). A solid,
+   generous gold reads calmer and more timeless here than a
+   moving gradient would — the couple's own names are the one
+   place restraint matters most. */
+.couple-title .nowrap {
+    width: 100%;
+    color: var(--gold-bright);
+}
+
+.couple-title .amp {
+    color: var(--gold);
+    font-size: clamp(1.4rem, 7vw, 3.1rem);
+    line-height: 1;
+    margin: 4px 0;
+}
+
+.hero .scroll-indicator {
+    margin-top: 15px;
+    font-size: clamp(0.65rem, 2.5vw, 0.75rem);
+    color: var(--gold);
+    opacity: 1;
+}
+
+.hero .scroll-indicator i {
+    color: var(--gold);
+}
+
+@media (max-width: 340px) {
+    .hero-content { gap: 9px; }
+    .blessing { font-size: 0.62rem; }
+    .invite-line { font-size: 0.56rem; line-height: 1.6; }
+    .couple-title { font-size: 2rem; }
+    .couple-title .amp { font-size: 1.15rem; }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+    .hero-content { gap: 6px; }
+    .blessing { font-size: clamp(0.6rem, 2.6vh, 1rem); }
+    .invite-line { font-size: clamp(0.55rem, 2vh, 0.9rem); line-height: 1.4; }
+    .couple-title { font-size: clamp(1.7rem, 8vh, 3.6rem); margin: 2px 0; }
+    .couple-title .amp { font-size: clamp(1rem, 4.5vh, 1.9rem); margin: 0; }
+    .hero .scroll-indicator { margin-top: 6px; }
+    .hero-content::before { display: none; }
+}
+
+@media (min-width: 1200px) {
+    .hero-content { max-width: 900px; }
+    .invite-line { font-size: 1.15rem; }
+    .couple-title { font-size: 6rem; }
+}
+
+/* ================================
+   8. SCRATCH
+   ================================ */
+.scratch {
+    background: radial-gradient(circle at 50% 15%, var(--rose-soft), var(--ivory-soft) 65%);
+}
+
+.scratch-wrapper {
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+}
+
+.scratch-hint {
+    font-size: 0.9rem;
+    color: var(--rose-deep);
+    opacity: 0.9;
+    letter-spacing: 0.5px;
+    margin-bottom: var(--space-3);
+}
+
+.scratch-box {
+    position: relative;
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto;
+    aspect-ratio: 340 / 220;
+    overflow: hidden;
+    border: 2px solid transparent;
+    background:
+        linear-gradient(var(--ivory), var(--ivory)) padding-box,
+        linear-gradient(135deg, var(--magenta), var(--gold), var(--marigold)) border-box;
+    box-shadow: var(--shadow-card), 0 0 26px rgba(244, 201, 206, 0.4);
+    border-radius: 60% 60% 16px 16px / 34% 34% 16px 16px;
+}
+
+/* Small heart badge — a romantic marker at the top of the card. */
+.scratch-box::before {
+    content: '♥';
+    position: absolute;
+    top: -13px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    line-height: 1;
+    color: #fff;
+    background: linear-gradient(135deg, var(--magenta), var(--marigold));
+    border: 1px solid var(--ivory);
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(201, 123, 135, 0.35);
+    z-index: 3;
+}
+
+/* Glitter overlay — twinkles over the gold scratch surface and
+   stays twinkling once the card underneath is revealed. */
+.scratch-box::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    background-repeat: no-repeat;
+    background-size: 5px 5px;
+    background-image:
+        radial-gradient(circle, #fff 0 1px, transparent 1.4px),
+        radial-gradient(circle, #fff 0 1px, transparent 1.3px),
+        radial-gradient(circle, #fff 0 1.2px, transparent 1.6px),
+        radial-gradient(circle, #fff 0 1px, transparent 1.3px),
+        radial-gradient(circle, #fff 0 1.1px, transparent 1.4px),
+        radial-gradient(circle, #fff 0 1px, transparent 1.3px),
+        radial-gradient(circle, #fff 0 1px, transparent 1.4px);
+    background-position:
+        12% 22%, 27% 58%, 44% 14%, 61% 70%, 76% 28%, 87% 62%, 93% 20%;
+    animation: sparkleTwinkle 2.6s ease-in-out infinite;
+}
+
+@keyframes sparkleTwinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+.date-hidden {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    padding-top: 34px;
+    background: radial-gradient(circle at 50% 25%, #FFF8F6, var(--rose-soft) 70%, var(--ivory));
+    z-index: 1;
+}
+
+.date-hidden .date-label {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    color: var(--rose-deep);
+}
+
+.date-hidden .date-main {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    color: var(--wine-800);
+    margin: 8px 0;
+    font-weight: 700;
+}
+
+.date-hidden .date-hijri {
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+#scratchCanvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    touch-action: none;
+    cursor: pointer;
+}
+
+/* ================================
+   9. COUNTDOWN
+   ================================ */
+.countdown-container {
+    position: relative;
+    margin-top: var(--space-4);
+    padding: var(--space-3);
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border-radius: 16px;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    overflow: hidden;
+}
+
+.countdown-container::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    background-repeat: no-repeat;
+    background-size: 5px 5px;
+    background-image:
+        radial-gradient(circle, #fff 0 1px, transparent 1.4px),
+        radial-gradient(circle, #ffe7a0 0 1px, transparent 1.3px),
+        radial-gradient(circle, #fff 0 1.1px, transparent 1.5px),
+        radial-gradient(circle, #ffe7a0 0 1px, transparent 1.4px);
+    background-position: 10% 20%, 85% 30%, 30% 80%, 70% 70%;
+    animation: sparkleTwinkle 3.2s ease-in-out infinite;
+}
+
+.countdown-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.countdown-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--wine-800);
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: var(--space-3);
+}
+
+.countdown-title i {
+    color: var(--marigold);
+}
+
+.countdown-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.countdown-item {
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 12px;
+    padding: 12px 8px;
+    border: 1px solid rgba(255, 152, 0, 0.2);
+}
+
+.countdown-number {
+    display: block;
+    font-size: clamp(1.3rem, 5vw, 1.8rem);
+    font-weight: 700;
+    color: var(--magenta-deep);
+    font-variant-numeric: tabular-nums;
+}
+
+.countdown-label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--ink-soft);
+    font-weight: 500;
+}
+
+/* ================================
+   10. COUPLE
+   ================================ */
+.couple {
+    background: radial-gradient(circle at 50% 20%, var(--ivory-soft), var(--ivory) 70%);
+    isolation: isolate;
+}
+
+/* Soft photo wash behind the section only — sits well below the
+   content and never competes with the icons/text on top of it. */
+.couple::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image: var(--flower-wash-1);
+    background-size: cover;
+    background-position: center;
+    opacity: 0.1;
+}
+
+.couple-wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    width: 100%;
+}
+
+.couple-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.profile-card {
+    position: relative;
+    border: 1px solid transparent;
+    background:
+        linear-gradient(var(--card), var(--card)) padding-box,
+        linear-gradient(135deg, var(--magenta), var(--gold)) border-box;
+    border-radius: 62% 62% 16px 16px / 30% 30% 16px 16px;
+    padding: 52px 22px 30px;
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+    transition: transform 0.35s var(--ease-lux), box-shadow 0.35s var(--ease-lux);
+    box-shadow: 0 4px 25px rgba(122, 11, 52, 0.06);
+}
+
+.profile-card::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 14px;
+    height: 14px;
+    background: var(--marigold);
+    border: 2px solid var(--ivory);
+    box-shadow: 0 2px 6px rgba(122, 11, 52, 0.2);
+}
+
+.profile-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 38px rgba(122, 11, 52, 0.12);
+}
+
+.profile-icon {
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+    color: var(--marigold);
+}
+
+.profile-card h3 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2rem;
+    color: var(--magenta);
+    font-weight: 400;
+}
+
+.profile-card h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--wine-800);
+    margin-top: 2px;
+}
+
+.qualification {
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    font-weight: 500;
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+}
+
+.divider {
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--marigold), transparent);
+    margin: 14px auto;
+    opacity: 0.8;
+}
+
+.parents {
+    font-size: 0.85rem;
+    font-style: italic;
+    color: #5C464A;
+}
+
+.heart-divider {
+    font-size: 1.7rem;
+    color: var(--magenta);
+    animation: pulseHeart 1.5s infinite;
+}
+
+@keyframes pulseHeart {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.25); }
+}
+
+/* ================================
+   11. VENUE
+   ================================ */
+.venue {
+    background: radial-gradient(circle, var(--ivory), var(--ivory-soft));
+    flex-direction: column;
+    isolation: isolate;
+}
+
+.venue::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image: var(--flower-wash-2);
+    background-size: cover;
+    background-position: center;
+    opacity: 0.09;
+}
+
+.venue-card {
+    position: relative;
+    z-index: 1;
+    background: var(--card);
+    border: 1px solid rgba(255, 152, 0, 0.2);
+    border-radius: var(--radius-card);
+    padding: 52px 25px 34px;
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    box-shadow: var(--shadow-card);
+}
+
+.gold-card {
+    border: 2px solid rgba(214, 51, 108, 0.25);
+    background: #FFFDF9;
+}
+
+/* A small icon badge crowning each venue card — the same
+   circular-badge language as the scratch card's heart mark,
+   kept minimal instead of a photo. Plain Unicode marks, so
+   there's no dependency on an icon-font codepoint being right. */
+.venue-card::before {
+    content: '✦';
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: #fff;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--magenta), var(--marigold));
+    border: 3px solid var(--ivory);
+    box-shadow: 0 6px 18px rgba(122, 11, 52, 0.3);
+    transition: transform 0.4s var(--ease-lux);
+}
+
+.venue-card:hover::before {
+    transform: translateX(-50%) scale(1.08) rotate(-4deg);
+}
+
+.gold-card::before {
+    content: '♥';
+}
+
+.venue-card h2 {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    font-weight: 400;
+    margin-bottom: var(--space-2);
+}
+
+.venue-date {
+    display: inline-block;
+    padding: 6px 18px;
+    background: var(--ivory-soft);
+    color: var(--wine-800);
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: var(--space-2);
+    border: 1px solid rgba(255, 152, 0, 0.15);
+}
+
+.venue-date.highlight {
+    background: rgba(214, 51, 108, 0.08);
+    color: var(--magenta-deep);
+    border: 1px solid rgba(255, 152, 0, 0.35);
+}
+
+.venue-time,
+.venue-name {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    color: var(--ink);
+    margin-bottom: 8px;
+}
+
+.venue-time i,
+.venue-name i {
+    color: var(--marigold);
+}
+
+.venue-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--wine-800);
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.venue-address {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    margin: 5px 0 22px;
+    line-height: 1.5;
+}
+
+.venue-image-container {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    
+}
+
+.venue-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 400 / 400;
+    object-fit: contain;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.venue-image:hover {
+    transform: scale(1.03);
+}
+
+
+.venue-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 28px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    border: 1px solid var(--magenta-deep);
+    color: var(--magenta-deep);
+    background: transparent;
+    overflow: hidden;
+    transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    width: 100%;
+}
+
+/* Shine sweep — a soft light streak crosses the button on hover */
+.venue-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -60%;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+    transform: skewX(-20deg) translateX(0);
+    transition: transform 0.6s ease;
+    pointer-events: none;
+    will-change: transform;
+}
+
+.venue-btn:hover::before {
+    transform: skewX(-20deg) translateX(475%);
+}
+
+.venue-btn:hover {
+    background: linear-gradient(135deg, var(--magenta), var(--marigold));
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 6px 20px rgba(214, 51, 108, 0.25);
+}
+
+.venue-btn:active {
+    transform: scale(0.97);
+}
+
+.venue-btn:focus-visible {
+    outline: 2px solid var(--marigold-deep);
+    outline-offset: 3px;
+}
+
+.venue-btn.primary {
+    background: linear-gradient(135deg, var(--magenta), var(--marigold-deep));
+    color: #fff;
+    border-color: transparent;
+}
+
+.venue-btn.primary:hover {
+    background: transparent;
+    color: var(--magenta-deep);
+    border-color: var(--magenta-deep);
+    box-shadow: none;
+}
+
+/* ================================
+   12. GREETINGS
+   ================================ */
+.greetings {
+    background: radial-gradient(ellipse at bottom, var(--ivory-soft), var(--ivory));
+    isolation: isolate;
+}
+
+.greetings::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image: var(--flower-wash-3);
+    background-size: cover;
+    background-position: center 30%;
+    opacity: 0.08;
+}
+
+.greetings-wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+}
+
+.greeting-title {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 400;
+    margin-bottom: var(--space-4);
+    line-height: 1.25;
+}
+
+.greeting-title::before,
+.greeting-title::after {
+    content: '✦';
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 0.5em;
+    color: var(--marigold-deep);
+    transform: translateY(-0.1em);
+}
+
+.greeting-title::before {
+    margin-right: 10px;
+}
+
+.greeting-title::after {
+    margin-left: 10px;
+}
+
+.greeting-block {
+    margin-bottom: var(--space-3);
+}
+
+.greeting-block h3 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--marigold-deep);
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.greeting-block p {
+    font-size: 1rem;
+    color: var(--ink);
+    font-weight: 500;
+}
+
+.greeting-block.special {
+    background: rgba(255, 152, 0, 0.06);
+    border: 1px dashed rgba(214, 51, 108, 0.3);
+    padding: var(--space-3);
+    border-radius: 12px;
+}
+
+.greeting-block.special p {
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+}
+
+.dua-section {
+    position: relative;
+    margin: var(--space-4) 0 var(--space-3);
+    padding: var(--space-3) 20px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    border-radius: 16px;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    overflow: hidden;
+}
+
+.dua-section::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    background-repeat: no-repeat;
+    background-size: 5px 5px;
+    background-image:
+        radial-gradient(circle, #fff 0 1px, transparent 1.4px),
+        radial-gradient(circle, #ffe7a0 0 1px, transparent 1.3px),
+        radial-gradient(circle, #fff 0 1.1px, transparent 1.5px);
+    background-position: 12% 25%, 80% 35%, 45% 75%;
+    animation: sparkleTwinkle 3s ease-in-out infinite;
+}
+
+.dua-text {
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--wine-800);
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+.dua-reference {
+    font-size: 0.85rem;
+    color: var(--marigold-deep);
+    margin-top: 8px;
+    font-weight: 600;
+}
+
+.wedding-footer {
+    margin-top: var(--space-4);
+    padding-top: var(--space-3);
+    border-top: 1px solid rgba(255, 152, 0, 0.2);
+}
+
+.wedding-footer p {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    color: var(--ink-soft);
+}
+
+.wedding-footer .thanks {
+    font-family: 'Great Vibes', cursive;
+    font-size: 1.5rem;
+    color: var(--magenta-deep);
+    margin-top: 8px;
+}
+
+/* ================================
+   13. CONFETTI
+   ================================ */
+#confettiCanvas {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 98;
+}
+
+/* ================================
+   14. RESPONSIVE — TABLET & UP
+   ================================ */
+@media (min-width: 768px) {
+    .couple-grid {
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 30px;
+    }
+
+    .profile-card {
+        max-width: 280px;
+    }
+
+    .heart-divider {
+        margin-top: 60px;
+        font-size: 2rem;
+    }
+
+    .scratch-box {
+        max-width: 380px;
+        aspect-ratio: 380 / 240;
+    }
+
+    .venue-card {
+        padding: 60px 40px 40px;
+    }
+
+    .venue-btn {
+        width: auto;
+        min-width: 200px;
+    }
+
+    .venue-image-container {
+        aspect-ratio: 16 / 9;
+    }
+}
+
+/* ================================
+   15. RESPONSIVE — DESKTOP
+   ================================ */
+@media (min-width: 1024px) {
+    .section {
+        padding: 90px 40px;
+    }
+
+    .profile-card {
+        padding: 60px 30px 40px;
+        max-width: 320px;
+    }
+
+    .venue-card {
+        padding: 70px 50px 46px;
+    }
+
+    .venue-image-container {
+        aspect-ratio: 21 / 9;
+    }
+}
+
+/* ================================
+   16. SCROLL-IN ANIMATIONS
+   ================================ */
+.profile-card,
+.greeting-block,
+.dua-section,
+.scratch-wrapper,
+.couple-wrapper,
+.greetings-wrapper {
+    opacity: 0;
+    transform: translateY(45px);
+    transition: opacity 0.8s var(--ease-lux), transform 0.8s var(--ease-lux);
+}
+
+.element-visible {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
+.profile-card:nth-child(1) { transition-delay: 0.1s; }
+.profile-card:nth-child(3) { transition-delay: 0.2s; }
+.heart-divider { transition-delay: 0.15s; }
+.greeting-block { transition-delay: 0.1s; }
+.greeting-block.special { transition-delay: 0.2s; }
+.dua-section { transition-delay: 0.25s; }
+
+.golden-flash {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle, rgba(255, 201, 60, 0.6), rgba(214, 51, 108, 0.3) 45%, transparent 70%);
+    pointer-events: none;
+    z-index: 9999;
+    animation: flashFade 1s ease forwards;
+}
+
+@keyframes flashFade {
+    from { opacity: 1; transform: scale(0.7); }
+    to { opacity: 0; transform: scale(1.8); }
+}
+
+.date-hidden.date-reveal {
+    animation: revealDateCard 1.5s ease forwards;
+}
+
+@keyframes revealDateCard {
+    0% { transform: scale(0.5); opacity: 0; }
+    40% { transform: scale(1.12); opacity: 1; }
+    70% { transform: scale(0.95); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.date-hidden.date-reveal .date-main {
+    animation: glowDate 2s infinite alternate;
+}
+
+@keyframes glowDate {
+    from { text-shadow: 0 0 10px rgba(201, 123, 135, 0.3); }
+    to {
+        text-shadow:
+            0 0 20px rgba(255, 201, 60, 0.6),
+            0 0 40px rgba(244, 201, 206, 0.55);
+    }
+}
+
+/* ================================
+   17. ACCESSIBILITY — REDUCED MOTION
+   ================================ */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    .hero-content { transform: none; }
+    body::before,
+    body::after { display: none; }
+}
+
+/* ================================
+   18. VIBRANT SHIMMER HEADINGS
+   Applied last so specificity wins cleanly over the plain
+   color declarations above — every major title shimmers.
+   ================================ */
+.section-title,
+.greeting-title,
+.venue-card h2 {
+    background: linear-gradient(90deg, var(--magenta), var(--marigold), var(--gold), var(--magenta-deep), var(--magenta));
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: shimmerSweep 7s linear infinite;
+}

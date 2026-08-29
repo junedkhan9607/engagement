@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="Valima invitation for Arshad & Sumaiya — 27th December 2026">
+    <title>Valima Invitation | Arshad & Sumaiya</title>
+
+    <!-- Fonts (kept to 3 families / trimmed weights for fast first paint) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@500;700&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Thin gold progress rail — shows how far through the invitation you are -->
+    <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+    <!-- ===== LOADER ===== -->
+    <div class="loader" id="loader" aria-hidden="true">
+        <div class="loader-inner">
+            <span class="loader-motif">✦</span>
+            <span class="loader-label nowrap">Preparing Your Invitation</span>
+            <div class="loader-bar-track">
+                <div class="loader-bar-fill" id="loaderBarFill"></div>
+            </div>
+            <span class="loader-percent" id="loaderPercent">0%</span>
+        </div>
+    </div>
+
+    <!-- ===== MUSIC PLAYER ===== -->
+    <audio id="bgMusic" loop preload="none">
+        <source src="guitar music.mp3" type="audio/mpeg">
+    </audio>
+    <button id="musicToggle" class="music-float-btn visible" aria-label="Play background music" type="button">
+        <i class="fas fa-music"></i>
+        <span class="pulse-ring"></span>
+    </button>
+
+    <!-- ===== HERO (video intro) ===== -->
+    <section class="section hero" id="hero">
+
+        <video id="bg-video" class="hero-video" playsinline muted preload="auto" disablePictureInPicture disableRemotePlayback aria-hidden="true">
+            <source src="Creating_architectural_entrance_…_202608081233.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+
+        <div id="video-overlay" class="video-overlay"></div>
+        <div class="hero-vignette" aria-hidden="true"></div>
+
+        <div class="hero-content" id="hero-content">
+
+            <span class="blessing nowrap">✦ بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ ✦</span>
+
+            <div class="invite-line">
+                <span class="nowrap">Under the Blessing of Almighty Allah,</span>
+                <span class="nowrap">We Invite You To Celebrate The Valima Of</span>
+            </div>
+
+            <div class="couple-title">
+                <span class="nowrap">Arshad</span>
+                <span class="amp">&</span>
+                <span class="nowrap">Sumaiya</span>
+            </div>
+
+            <div class="scroll-indicator section-scroll-next" data-next="scratch">
+                <span class="nowrap">Scroll to explore</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+
+        </div>
+    </section>
+
+    
+    <!-- ===== MAIN CONTENT ===== -->
+    <div id="mainContent" class="visible">
+
+        <!-- SECTION: SCRATCH DATE -->
+        <section class="section scratch" id="scratch">
+            <div class="scratch-wrapper">
+                <p class="eyebrow">✦ The Auspicious Day ✦</p>
+                <h2 class="section-title">Reveal the Date</h2>
+                <p class="scratch-hint">Scratch the golden card to unveil it</p>
+
+                <div class="scratch-box">
+                    <div class="date-hidden">
+                        <span class="date-label">Save The Date</span>
+                        <strong class="date-main">27th December 2026</strong>
+                        <span class="date-hijri">17 Jumada al-Thani 1448 AH</span>
+                    </div>
+                    <canvas id="scratchCanvas" width="340" height="220"></canvas>
+                </div>
+
+                <!-- Countdown Timer -->
+                <div id="countdownContainer" class="countdown-container">
+                    <h3 class="countdown-title"><i class="fas fa-mosque"></i> Time Until The Big Day</h3>
+                    <div class="countdown-grid">
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="days">00</span>
+                            <span class="countdown-label">Days</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="hours">00</span>
+                            <span class="countdown-label">Hours</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="minutes">00</span>
+                            <span class="countdown-label">Mins</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="seconds">00</span>
+                            <span class="countdown-label">Secs</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scroll-indicator section-scroll-next" data-next="couple">
+                    <span>Scroll to explore</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: COUPLE -->
+        <section class="section couple" id="couple">
+            <div class="couple-wrapper">
+                
+                <h2 class="section-title">The Happy Couple</h2>
+
+                <div class="couple-grid">
+                    <div class="profile-card">
+                        <div class="profile-icon"><i class="fas fa-user-tie"></i></div>
+                        <h3>Groom</h3>
+                        <h4>Arshad Khan</h4>
+                        <p class="qualification">B.E. (Computer Science)</p>
+                        <div class="divider"></div>
+                        <p class="parents">Son of Mr. &amp; Mrs. Irfan Khan</p>
+                    </div>
+                    <div class="heart-divider"><i class="fas fa-heart"></i></div>
+                    <div class="profile-card">
+                        <div class="profile-icon"><i class="fas fa-gem"></i></div>
+                        <h3>Bride</h3>
+                        <h4>Sumaiya Patel</h4>
+                        <p class="qualification">M.Sc. (Data Analytics)</p>
+                        <div class="divider"></div>
+                        <p class="parents">Daughter of Mr. &amp; Mrs. Shakeel Patel</p>
+                    </div>
+                </div>
+
+                <div class="scroll-indicator section-scroll-next" data-next="nikah">
+                    <span>Scroll to explore</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: NIKAH -->
+        <section class="section venue" id="nikah">
+            <div class="venue-card">
+                <div class="venue-image-container">
+                    <img src="masjid.png" alt="Shahi Masjid" class="venue-image" loading="lazy" width="600" height="450">
+                </div>
+                <span class="eyebrow">✦ The Holy Union ✦</span>
+                <h2>Nikaah Ceremony</h2>
+                <div class="venue-date">Saturday, 26th December 2026</div>
+                <p class="venue-time"><i class="fas fa-clock"></i> After Asr Namaz (4:30 PM)</p>
+                <p class="venue-name"><i class="fas fa-mosque"></i> Shahi Masjid</p>
+                <p class="venue-address">Kila Ark, Near Panchakki, Aurangabad</p>
+
+                <a href="https://maps.google.com" target="_blank" rel="noopener" class="venue-btn">
+                    <i class="fas fa-location-dot"></i> Get Location
+                </a>
+            </div>
+            <div class="scroll-indicator section-scroll-next" data-next="valima">
+                <span>Scroll to explore</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </section>
+
+        <!-- SECTION: VALIMA -->
+        <section class="section venue" id="valima">
+            <div class="venue-card gold-card">
+                <div class="venue-image-container">
+                    <img src="hall.png" alt="Royal Heritage Lawn" class="venue-image" loading="lazy" width="600" height="450">
+                </div>
+                <span class="eyebrow">✦ The Grand Feast ✦</span>
+                <h2>Valima Dinner</h2>
+                <div class="venue-date highlight">Sunday, 27th December 2026</div>
+                <p class="venue-time"><i class="fas fa-clock"></i> Dinner: 08:00 PM onwards</p>
+                <p class="venue-name"><i class="fas fa-hotel"></i> Royal Heritage Lawn</p>
+                <p class="venue-address">Beed Bypass Road, Near MIT College, Aurangabad</p>
+
+                <a href="https://maps.google.com" target="_blank" rel="noopener" class="venue-btn primary">
+                    <i class="fas fa-map-location-dot"></i> Get Location
+                </a>
+            </div>
+            <div class="scroll-indicator section-scroll-next" data-next="greetings">
+                <span>Scroll to explore</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </section>
+
+        <!-- SECTION: GREETINGS -->
+        <section class="section greetings" id="greetings">
+            <div class="greetings-wrapper">
+                <p class="eyebrow">✦ With Love &amp; Gratitude ✦</p>
+                <h2 class="greeting-title">Forever Wishes from Khan Family</h2>
+
+                <div class="greeting-block">
+                    <h3>Best Compliments From</h3>
+                    <p>All Relatives &amp; Friends</p>
+                </div>
+                <div class="greeting-block special">
+                    <h3>Invitation from Groom's Family</h3>
+                    <p>Mr. Irfan Khan (Father)</p>
+                    <p>Mr. Salman Khan (Uncle)</p>
+                    <p>Adnan &amp; Imran Khan (Brothers)</p>
+                </div>
+
+                <div class="dua-section">
+                    <p class="dua-text">"May Allah bless this union with endless love, peace, and prosperity."</p>
+                    <p class="dua-reference">— Ameen</p>
+                </div>
+
+                <footer class="wedding-footer">
+                    <p>We await your presence to bless the newlyweds.</p>
+                    <p class="thanks">Thank You</p>
+                </footer>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ===== CONFETTI CANVAS ===== -->
+    <canvas id="confettiCanvas"></canvas>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="script.js"></script>
+
+</body>
+</html>>>
